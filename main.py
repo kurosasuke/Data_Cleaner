@@ -40,4 +40,13 @@ workbook.save("FC_Data_Cleaned.xlsx")
 
 # Plot results
 plt.scatter(xxx, yyy)
+
+# Calculate equation for trendline
+z = numpy.polyfit(xxx, yyy, 6)
+p = numpy.poly1d(z)
+
+# Add trendline to scatter plot
+plt.plot(xxx, p(xxx), color="purple", linewidth=3, linestyle="--")
+
+# Show plot on Pycharm (maybe you doesn't need it)
 plt.show()

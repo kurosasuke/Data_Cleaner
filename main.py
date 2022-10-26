@@ -33,5 +33,5 @@ for x in range(len(sheet[col])):
 workbook.save("FC_Data_Cleaned.xlsx")
 
 # Plot results
-plt.plot(xxx, yyy)
+plt.scatter(xxx, yyy)
 plt.show()

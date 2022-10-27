@@ -1,0 +1,71 @@
+import matplotlib.pyplot as plt
+import numpy
+import openpyxl
+
+# Get Excel data
+worksheet = openpyxl.load_workbook(filename=r"C:\Users\darii\OneDrive\Desktop\FC_data.xlsx")
+
+workbook = openpyxl.Workbook()
+newworksheet = workbook.active
+
+sheet = worksheet.active
+col = "D"
+sec = "C"
+num_ramp = 20
+
+ramps_t = numpy.zeros((len(sheet[sec]), 70))
+ramps_v = numpy.zeros((len(sheet[sec]), 70))
+ramps_c = numpy.zeros((len(sheet[sec]), 70))
+ramps_v_mod = numpy.zeros(len(ramps_v[:, num_ramp]))
+ramps_c_mod = numpy.zeros(len(ramps_c[:, num_ramp]))
+
+# initialization
+i = 1
+t = 0
+
+# Get Voltage column position
+for k in range(7):
+    if sheet.cell(row=1, column=k + 1).value == "Voltage":
+        p_volt = k + 1
+
+# Delete short circuit values
+for x in range(len(sheet[col])):
+    s = x + 1
+    if sheet.cell(row=s, column=p_volt).value == 0 and sheet.cell(row=s - 1, column=p_volt).value != 0 and \
+            sheet.cell(row=s + 1, column=p_volt).value != 0:
+        t = 1
+    else:
+        newworksheet.cell(row=i, column=1).value = sheet.cell(row=s, column=p_volt).value
+        newworksheet.cell(row=i, column=2).value = sheet.cell(row=s, column=p_volt + 1).value
+        i += 1
+
+# Separate ramping
+counter = 0
+for n in range(len(sheet[sec])):
+    nn = n+2
+    if sheet.cell(row=nn, column=3).value == 0 and sheet.cell(row=nn + 1, column=3).value == 0:
+        counter += 1
+        ramps_t[n, counter] = sheet.cell(row=nn, column=3).value
+        ramps_v[n, counter] = sheet.cell(row=nn, column=4).value
+        ramps_c[n, counter] = sheet.cell(row=nn, column=5).value
+    else:
+        ramps_t[n, counter] = sheet.cell(row=nn, column=3).value
+        ramps_v[n, counter] = sheet.cell(row=nn, column=4).value
+        ramps_c[n, counter] = sheet.cell(row=nn, column=5).value
+
+print(ramps_t)
+# Save right values
+workbook.save("FC_Data_Cleaned.xlsx")
+
+# Prepare ramps for plot (get rid of zeros)
+
+# Plot results
+#plt.scatter(ramps_v_mod[:], ramps_c_mod[:])
+
+# Trend-line equation
+#z = numpy.polyfit(ramps_v_mod[:], ramps_c_mod[:], 6)
+#p = numpy.poly1d(z)
+
+# Add trend-line to plot
+#plt.plot(ramps_v_mod[:], p(ramps_v_mod[:]), color="purple", linewidth=2, linestyle="--")
+#plt.show()

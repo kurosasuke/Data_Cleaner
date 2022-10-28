@@ -35,8 +35,6 @@ for i in range(len(sheet[col_C])):
         Curr[i] = val_c
 
 # Ramping
-Ramps = np.zeros((8035, 8035), dtype=int)
-
 for i in range(len(Time)):
     if Time[i] == 0 and Time[i + 1] == 0:
         new_Time = np.array_split(Time, 3)

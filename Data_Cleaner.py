@@ -35,24 +35,33 @@ for i in range(len(sheet[col_C])):
         Curr[i] = val_c
 
 # Time start from zero
-Time = Time[47:]
-Volt = Volt[47:]
-Curr = Curr[47:]
+Time = Time[252:]
+Volt = Volt[252:]
+Curr = Curr[252:]
+
+# Clean data from zeros
+Volt_n = np.zeros(len(Volt))
+Curr_n = np.zeros(len(Curr))
+
+for i in range(len(Volt)):
+    if Volt[i] != 0:
+        Volt_n[i] = Volt[i]
+        Curr_n[i] = Curr[i]
 
 # Ramping
 for i in range(len(Time)):
     if Time[i] == 0 and Time[i + 1] == 0:
-        new_Time = np.array_split(Time, 68)
+        new_Time = np.array_split(Time, 66)
 
 # Plot results
-plt.scatter(Volt, Curr)
+plt.scatter(Volt_n, Curr_n)
 
 # Trend-line
-z = np.polyfit(Volt, Curr, 7)
+z = np.polyfit(Volt_n, Curr_n, 7)
 p = np.poly1d(z)
 
 # Add trend-line to scatter plot
-plt.plot(Volt, p(Volt), color="purple", linewidth=1, linestyle="--")
+plt.plot(Volt_n, p(Volt_n), color="purple", linewidth=1, linestyle="--")
 
 # Show plot on Pycharm (maybe you doesn't need it)
 plt.show()

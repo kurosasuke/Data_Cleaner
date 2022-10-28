@@ -37,7 +37,7 @@ for i in range(len(sheet[col_C])):
 # Ramping
 for i in range(len(Time)):
     if Time[i] == 0 and Time[i + 1] == 0:
-        new_Time = np.array_split(Time, 3)
+        new_Time = np.array_split(Time, 60)
 
 # Plot results
 plt.scatter(Volt, Curr)

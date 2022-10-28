@@ -35,20 +35,11 @@ for i in range(len(sheet[col_C])):
         Curr[i] = val_c
 
 # Ramping
-Ramps = np.eye(10800, dtype=int)
-# Row counter
-row = 0
-# Column counter
-counter = 0
+Ramps = np.zeros((8035, 8035), dtype=int)
 
 for i in range(len(Time)):
-    if Time[i] == 0 and Time[i+1] == 0:
-        counter += 1
-        Ramps[row, counter] = Time[i]
-        row += 1
-    else:
-        Ramps[row, counter] = Time[i]
-        row += 1
+    if Time[i] == 0 and Time[i + 1] == 0:
+        new_Time = np.array_split(Time, 3)
 
 # Plot results
 plt.scatter(Volt, Curr)
@@ -57,7 +48,7 @@ plt.scatter(Volt, Curr)
 z = np.polyfit(Volt, Curr, 7)
 p = np.poly1d(z)
 
-# Add trendline to scatter plot
+# Add trend-line to scatter plot
 plt.plot(Volt, p(Volt), color="purple", linewidth=1, linestyle="--")
 
 # Show plot on Pycharm (maybe you doesn't need it)

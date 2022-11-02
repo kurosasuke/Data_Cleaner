@@ -1,7 +1,6 @@
 import numpy as np
 import openpyxl
 import matplotlib.pyplot as plt
-from scipy.optimize import curve_fit
 
 # Get Excel data
 worksheet = openpyxl.load_workbook(filename=r"C:\Users\darii\OneDrive\Desktop\FC_data.xlsx")

@@ -1,6 +1,7 @@
 import numpy as np
 import openpyxl
 import matplotlib.pyplot as plt
+from scipy.optimize import curve_fit
 
 # Get Excel data
 worksheet = openpyxl.load_workbook(filename=r"C:\Users\darii\OneDrive\Desktop\FC_data.xlsx")
@@ -69,15 +70,29 @@ for i in range(len(Volt_n)):
         new_Volt.append(Volt_n[i])
         new_Curr.append(Curr_n[i])
 
+# Delete scatter datas
+Volt_r = []
+Curr_r = []
+
+for i in range(len(new_Volt)-1):
+    if new_Volt[i+1] - new_Volt[i] < 0.2:
+        Volt_r.append(new_Volt[i])
+        Curr_r.append(new_Curr[i])
+
 # Plot results
-plt.scatter(new_Volt, new_Curr)
+plt.scatter(Volt_r, Curr_r)
 
 # Trend-line
-z = np.polyfit(new_Volt, new_Curr, 7)
+z = np.polyfit(Volt_r, Curr_r, 5)
 p = np.poly1d(z)
 
 # Add trend-line to scatter plot
-plt.plot(new_Volt, p(new_Volt), color="purple", linewidth=1, linestyle="--")
+xmodel = np.arange(40, 70, 0.1)
+ymodel = np.polyval(z, xmodel)
+plt.plot(xmodel, ymodel, color="purple", linewidth=3, linestyle="--")
+plt.title("Polarization function (V-I)")
+plt.xlabel("Voltage [V]")
+plt.ylabel("Current [A]")
 
 # Show plot on Pycharm (maybe you doesn't need it)
 plt.show()
